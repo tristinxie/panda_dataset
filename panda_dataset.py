@@ -24,8 +24,8 @@ class PandaDataset(Dataset):
     def __getitem__(self, idx):
         if torch.is_tensor(idx):
             idx = idx.tolist()
-
-        ep_path = os.path.join(self.root_dir, f"panda_{idx+1}")
+        ep_num = str(idx+1).zfill(4)
+        ep_path = os.path.join(self.root_dir, f"panda_{ep_num}")
         ep_json_path = os.path.join(ep_path, "info.json")
         with open(ep_json_path) as f:
             json_data = json.load(f)
