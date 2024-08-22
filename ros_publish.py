@@ -7,6 +7,7 @@ import rospy
 from sensor_msgs.msg import JointState
 from sensor_msgs.msg import Image
 from rosgraph_msgs.msg import Clock
+from std_msgs.msg import Float64MultiArray
 
 if __name__ == "__main__":
     dataset_dir = "/home/workspace/src/panda_dataset/panda_dataset" # change as necessary
@@ -16,19 +17,28 @@ if __name__ == "__main__":
 
     joint_pub = rospy.Publisher("/joint_states", JointState, queue_size=10)
     img_pub = rospy.Publisher("/rgb/image_raw", Image, queue_size=10)
+    calib_ctr_pub = rospy.Publisher("/calib_ctr", Float64MultiArray, queue_size=10)
     clk_pub = rospy.Publisher("/clock", Clock, queue_size=10)
 
     rospy.init_node("joint_state_publisher")
     rate = rospy.Rate(30)
     joint_msg = JointState()
     image_msg = Image()
+    calib_ctr_msg = Float64MultiArray()
+    # calib_ctr_layout = MultiArrayDimension()
+    # calib_ctr_layout.label = 
+    # calib_ctr_msg.layout.dim[]
     clock = Clock()
     joint_msg.name = ["panda_joint1", "panda_joint2", "panda_joint3", "panda_joint4", "panda_joint5", "panda_joint6", "panda_joint7"]
+    calib_ctr = list(sample["calibration_info"]["extrinsic"].flatten().numpy())
+    calib_ctr_msg.data = calib_ctr
     while not rospy.is_shutdown():
         try:
             for i, timestamp in enumerate(sample["steps"]):
                 ros_timestamp = rospy.Time.from_sec(float(timestamp))
                 step = sample["steps"][timestamp]
+
+                calib_ctr_pub.publish(calib_ctr_msg)
 
                 joint_msg.header.stamp = ros_timestamp
                 joint_msg.position = step["joint_angles"].squeeze().numpy()
@@ -46,7 +56,7 @@ if __name__ == "__main__":
 
                 image_msg.data = image
                 img_pub.publish(image_msg)
-
+                
                 rate.sleep()
         except KeyboardInterrupt:
             rospy.signal_shutdown("Done.")
