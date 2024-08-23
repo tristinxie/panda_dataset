@@ -13,7 +13,7 @@ Dataset of Franka Emika Panda robot with ground truth camera-to-robot base, cali
 <img src="./assets/gifs/panda_0006.gif" height="120" width="160" /> <img src="./assets/gifs/panda_0007.gif" height="120" width="160" /> <img src="./assets/gifs/panda_0008.gif" height="120" width="160" /> <img src="./assets/gifs/panda_0009.gif" height="120" width="160" /> <img src="./assets/gifs/panda_0010.gif" height="120" width="160" />
 
 ## Usage
-`panda_ep_dataset.py` contains the custom episode dataloader. `panda_step_datastep` contains the custom step dataloader per episode. See `demo.ipynb` for more details.
+`panda_ep_dataset.py` contains the custom PyTorch episode dataset. `panda_step_datastep.py` contains the custom PyTorch step dataset per episode. See `demo.ipynb` for more details and example usage.
 
 ## Dataset Schema
 ### PyTorch Dataloader
