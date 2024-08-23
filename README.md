@@ -16,9 +16,29 @@ Dataset of Franka Emika Panda robot with ground truth camera-to-robot base, cali
 `panda_dataset.py` contains the custom PyTorch dataloader. See `demo.ipynb` for more details.
 
 ## Dataset Schema
-### Episode `info.json`
-```
-```
 ### PyTorch Dataloader
-If you use the included PyTorch dataloader, we provide ready loaded data as additional keys you can access. You don't have to write code to read the files.
+If you use the included PyTorch dataloader, we provide ready loaded data as additional keys you can access. You don't have to write code to read the files. Use `transform = ToTensor()` to receive data as PyTorch tensors and images in PyTorch format. 
 
+```python
+PDS = {
+    "calibration_info": {
+        "extrinsic": float (1,6)
+        "intrinsic": float (3,3)
+    },
+    "steps": {
+        # timestamp# = floating point unix epoch timestamp with secs and nsecs as strings
+        "timestamp1": {
+            "img_file": "panda_{ep_num}_f0001.png",
+            "img_data": uint8 (3, H, W) or (H, W, 3), # Only available if using Dataloader.
+            "joint_angles": float (7)
+        },
+        ...
+        "timestampn": {
+            "img_file": "panda_{ep_num}_f{last_frame_num}.png",
+            "img_data": uint8 (3, H, W) or (H, W, 3), # Only available if using Dataloader.
+            "joint_angles": float (7)
+        }
+    },
+    "timestamps": str (len(steps)) # Only available if using Dataloader
+}
+```

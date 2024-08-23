@@ -33,7 +33,7 @@ class PandaDataset(Dataset):
         steps = json_data["steps"]
         timestamps = list(steps.keys())
         json_data["timestamps"] = timestamps
-        for timestamp in timestamps:
+        for _, timestamp in enumerate(steps):
             img_path = os.path.join(ep_path, steps[timestamp]["img_file"])
             image = np.array(Image.open(img_path))
             steps[timestamp]["joint_angles"] = np.array(steps[timestamp]["joint_angles"])
@@ -51,9 +51,10 @@ class ToTensor(object):
 
     def __call__(self, sample):
         for timestamp in sample["timestamps"]:
-            image = sample["steps"][timestamp]["img_data"]
-            image_t = image.transpose((2, 0, 1))
-            sample["steps"][timestamp]["img_data"] = image_t
+            if timestamp in sample["steps"]:
+                image = sample["steps"][timestamp]["img_data"]
+                image_t = image.transpose((2, 0, 1))
+                sample["steps"][timestamp]["img_data"] = image_t
         # swap color axis because
         # numpy image: H x W x C
         # torch image: C x H x W
