@@ -5,9 +5,7 @@ import numpy as np
 from PIL import Image
 from torch.utils.data import Dataset
 
-class PandaDataset(Dataset):
-    """Face Landmarks dataset."""
-
+class PandaEpisodeDataset(Dataset):
     def __init__(self, root_dir, transform=None):
         """
         Arguments:
@@ -50,13 +48,18 @@ class ToTensor(object):
     """Convert ndarrays in sample to Tensors."""
 
     def __call__(self, sample):
-        for timestamp in sample["timestamps"]:
-            if timestamp in sample["steps"]:
-                image = sample["steps"][timestamp]["img_data"]
-                image_t = image.transpose((2, 0, 1))
-                sample["steps"][timestamp]["img_data"] = image_t
-        # swap color axis because
-        # numpy image: H x W x C
-        # torch image: C x H x W
+        timestamps, intrinsic, extrinsic = sample["timestamps"], sample["calibration_info"]["intrinsic"], sample["calibration_info"]["extrinsic"]
+        sample["calibration_info"]["intrinsic"] = torch.from_numpy(intrinsic)
+        sample["calibration_info"]["extrinsic"] = torch.from_numpy(extrinsic)
+        for timestamp in timestamps:
+            step = sample["steps"][timestamp]
+            image = step["img_data"]
+            image_t = image.transpose((2, 0, 1))
+            # swap color axis because
+            # numpy image: H x W x C
+            # torch image: C x H x W
+            sample["steps"][timestamp]["img_data"] = image_t
+            sample["steps"][timestamp]["joint_angles"] = torch.from_numpy(step["joint_angles"])
+        
         return sample
 
