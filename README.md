@@ -3,15 +3,11 @@ Dataset of Franka Emika Panda robot with ground truth camera-to-robot base, cali
 
 
 ## Download (7zip)
-- [10 episodes dataset](https://drive.google.com/file/d/1JN1RARqZaM1HpZEr-ZnHOR5Q0k_BtRLe/view?usp=drive_link)
-
-## 10 episodes visualized
-### Camera angle 1
-<img src="./assets/gifs/panda_0001.gif" height="120" width="160" /> <img src="./assets/gifs/panda_0002.gif" height="120" width="160" /> <img src="./assets/gifs/panda_0003.gif" height="120" width="160" /> <img src="./assets/gifs/panda_0004.gif" height="120" width="160" /> <img src="./assets/gifs/panda_0005.gif" height="120" width="160" />
-
-### Camera angle 2
-<img src="./assets/gifs/panda_0006.gif" height="120" width="160" /> <img src="./assets/gifs/panda_0007.gif" height="120" width="160" /> <img src="./assets/gifs/panda_0008.gif" height="120" width="160" /> <img src="./assets/gifs/panda_0009.gif" height="120" width="160" /> <img src="./assets/gifs/panda_0010.gif" height="120" width="160" />
-
+### Current
+- [10 episodes full body view](https://drive.google.com/file/d/1VAqf5pfmrYJ64kDeSYfRVHPjkYAv-yAF/view)
+- [20 episodes partial view](https://drive.google.com/file/d/1jbzwUwRSSRJgmMVY_rM1u_1ghXLL36ax/view)
+### Previous
+- [10 episodes partial dataset](https://drive.google.com/file/d/1JN1RARqZaM1HpZEr-ZnHOR5Q0k_BtRLe/view)
 ## Usage
 `panda_ep_dataset.py` contains the custom PyTorch episode dataset. `panda_step_datastep.py` contains the custom PyTorch step dataset per episode. See `demo.ipynb` for more details and example usage.
 
