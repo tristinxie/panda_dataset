@@ -6,7 +6,7 @@ from PIL import Image
 from torch.utils.data import Dataset
 
 class PandaStepDataset(Dataset):
-    def __init__(self, root_dir, ep_num, transform=None):
+    def __init__(self, root_dir, ep_num, chosen_frames=None, transform=None):
         """
         Arguments:
             root_dir (string): Directory with all the images and json file.
@@ -32,7 +32,9 @@ class PandaStepDataset(Dataset):
         self.data["calibration_info"]["intrinsic"] =  np.array(json_data["calibration_info"]["intrinsic"])
 
         timestamps = list(steps.keys())
-        self.data["timestamps"] = timestamps
+        self.data["timestamps"] = np.array(timestamps)
+        if chosen_frames is not None:
+            self.data["timestamps"] = self.data["timestamps"][chosen_frames]
 
     def __len__(self):
         return len(self.data["timestamps"])
